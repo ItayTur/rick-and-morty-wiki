@@ -1,10 +1,11 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-const apiUrl = 'https://rickandmortyapi.com/api/character/';
+const defaultEndPoint = 'https://rickandmortyapi.com/api/character/';
 
 export async function getStaticProps() {
-  const res = await fetch(apiUrl);
+  const res = await fetch(defaultEndPoint);
   const data = await res.json();
   return {
     props: {
@@ -14,16 +15,47 @@ export async function getStaticProps() {
 }
 
 export default function Home({ data }) {
-  const { results = [] } = data;
+  const { info, results: defaultCharacters = [] } = data;
+  const [characters, updateCharacters] = useState(defaultCharacters);
+  const [page, updatePage] = useState({ ...info, current: defaultEndPoint })
+  const { current } = page;
 
-  const characters = results.map(character => (
+  useEffect(() => {
+    if (current === defaultEndPoint) return;
+
+    const request = async () => {
+      const res = await fetch(current);
+      const nextData = await res.json();
+
+      updatePage({
+        current,
+        ...nextData.info
+      })
+
+      if (!nextData.info.prev) {
+        updateCharacters(nextData.results)
+        return;
+      }
+
+      updateCharacters(prev => [...prev, ...nextData.results])
+    }
+
+    request();
+  }, [current])
+
+  const handleLoadMore = () => {
+    updatePage(prev => ({ ...prev, current: page?.next }))
+  }
+
+  const charactersJsx = characters.map(character =>
     <li key={character.id} className={styles.card}>
       <a hred='#'>
-        <img src={character.image} alt={`${character.name} thumbnail`}/>
+        <img src={character.image} alt={`${character.name} thumbnail`} />
         <h3>{character.name}</h3>
       </a>
     </li>
-  ));
+  );
+
   return (
     <div className={styles.container}>
       <Head>
@@ -41,8 +73,11 @@ export default function Home({ data }) {
         </p>
 
         <ul className={styles.grid}>
-          {characters}
+          {charactersJsx}
         </ul>
+        <p>
+          <button onClick={handleLoadMore}>Load More</button>
+        </p>
       </main>
 
       <footer className={styles.footer}>
