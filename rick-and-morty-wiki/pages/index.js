@@ -23,7 +23,6 @@ export default function Home({ data }) {
   const { current } = page;
 
   useEffect(() => {
-    if (current === defaultEndPoint) return;
 
     const request = async () => {
       const res = await fetch(current);
@@ -34,7 +33,7 @@ export default function Home({ data }) {
         ...nextData.info
       })
 
-      if (!nextData.info.prev) {
+      if (!nextData.info?.prev) {
         updateCharacters(nextData.results)
         return;
       }
@@ -58,7 +57,15 @@ export default function Home({ data }) {
     });
   }
 
-  const charactersJsx = characters.map(character =>
+  const handleGetAll = e => {
+    e.preventDefault();
+    updateSearchQuery('');
+    updatePage({current: defaultEndPoint});
+  }
+
+  const hasCharacters = Boolean(characters);
+
+  const charactersJsx = hasCharacters ? characters.map(character =>
     <li key={character.id} className={styles.card}>
       <Link href='/character/[id]' as={`/character/${character.id}`}>
         <a>
@@ -67,12 +74,12 @@ export default function Home({ data }) {
         </a>
       </Link>
     </li>
-  );
+  ) : <h3>learn to spell</h3>;
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Rick and Morty Wiki</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -86,15 +93,16 @@ export default function Home({ data }) {
         </p>
 
         <form className={styles.search} onSubmit={handleSearch}>
-          <input onChange={e => updateSearchQuery(e.target.value)} name='query' type='search' />
+          <input placeholder='example: Mr. mees' value={searchQuery} onChange={e => updateSearchQuery(e.target.value)} name='query' type='search' />
           <button className={styles.button}>Search</button>
+          <button onClick={handleGetAll} className={styles.button}>Get All</button>
         </form>
 
         <ul className={styles.grid}>
           {charactersJsx}
         </ul>
         <p>
-          <button onClick={handleLoadMore}>Load More</button>
+          {hasCharacters && <button className={styles.button} onClick={handleLoadMore}>Load More</button>}
         </p>
       </main>
 
