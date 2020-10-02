@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Link from 'next/link';
+import styles from '../styles/Home.module.css';
 
-const defaultEndPoint = 'https://rickandmortyapi.com/api/character/';
+export const defaultEndPoint = 'https://rickandmortyapi.com/api/character/';
 
 export async function getStaticProps() {
   const res = await fetch(defaultEndPoint);
@@ -59,10 +60,12 @@ export default function Home({ data }) {
 
   const charactersJsx = characters.map(character =>
     <li key={character.id} className={styles.card}>
-      <a hred='#'>
-        <img src={character.image} alt={`${character.name} thumbnail`} />
-        <h3>{character.name}</h3>
-      </a>
+      <Link href='/character/[id]' as={`/character/${character.id}`}>
+        <a>
+          <img src={character.image} alt={`${character.name} thumbnail`} />
+          <h3>{character.name}</h3>
+        </a>
+      </Link>
     </li>
   );
 
@@ -84,7 +87,7 @@ export default function Home({ data }) {
 
         <form className={styles.search} onSubmit={handleSearch}>
           <input onChange={e => updateSearchQuery(e.target.value)} name='query' type='search' />
-          <button>Search</button>
+          <button className={styles.button}>Search</button>
         </form>
 
         <ul className={styles.grid}>
