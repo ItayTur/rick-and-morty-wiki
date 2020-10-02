@@ -18,6 +18,7 @@ export default function Home({ data }) {
   const { info, results: defaultCharacters = [] } = data;
   const [characters, updateCharacters] = useState(defaultCharacters);
   const [page, updatePage] = useState({ ...info, current: defaultEndPoint })
+  const [searchQuery, updateSearchQuery] = useState('');
   const { current } = page;
 
   useEffect(() => {
@@ -44,7 +45,16 @@ export default function Home({ data }) {
   }, [current])
 
   const handleLoadMore = () => {
-    updatePage(prev => ({ ...prev, current: page?.next }))
+    updatePage(prev => ({ ...prev, current: prev?.next }))
+  }
+
+  const handleSearch = e => {
+    e.preventDefault();
+    const endpoint = `https://rickandmortyapi.com/api/character/?name=${searchQuery}`;
+
+    updatePage({
+      current: endpoint
+    });
   }
 
   const charactersJsx = characters.map(character =>
@@ -71,6 +81,11 @@ export default function Home({ data }) {
         <p className={styles.description}>
           Rick and Morty Character Wiki
         </p>
+
+        <form className={styles.search} onSubmit={handleSearch}>
+          <input onChange={e => updateSearchQuery(e.target.value)} name='query' type='search' />
+          <button>Search</button>
+        </form>
 
         <ul className={styles.grid}>
           {charactersJsx}

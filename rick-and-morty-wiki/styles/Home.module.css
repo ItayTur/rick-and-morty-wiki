@@ -118,7 +118,21 @@
   height: 1em;
 }
 
+.search input {
+  margin-right: .5em;
+}
+
 @media (max-width: 600px) {
+  .search input {
+    margin-right: 0;
+    margin-bottom: .5em;
+  }
+
+  .search input,
+  .search button {
+    width: 100%;
+  }
+  
   .grid {
     width: 100%;
     flex-direction: column;
