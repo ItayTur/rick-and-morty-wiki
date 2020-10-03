@@ -67,14 +67,19 @@ export default function Home({ data }) {
   const hasCharacters = Boolean(characters);
 
   const charactersJsx = hasCharacters ? characters.map(character =>
-    <li key={character.id} className={styles.card}>
-      <Link href='/character/[id]' as={`/character/${character.id}`}>
-        <a>
-          <img src={character.image} alt={`${character.name} thumbnail`} />
-          <h3>{character.name}</h3>
-        </a>
-      </Link>
-    </li>
+    <motion.li key={character.id} className={styles.card} whileHover={{
+      scale: 1.2,
+      transition: {
+        duration: .2
+      }
+    }}>
+        <Link href='/character/[id]' as={`/character/${character.id}`}>
+          <a>
+            <img src={character.image} alt={`${character.name} thumbnail`} />
+            <h3>{character.name}</h3>
+          </a>
+        </Link>
+    </motion.li>
   ) : <h3>learn to spell</h3>;
 
   return (
