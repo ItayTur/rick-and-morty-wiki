@@ -9,6 +9,11 @@
   --main-color: #ff40ab;
 }
 
+.container::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+}
+
 .main {
   padding: 5rem 0;
   flex: 1;
