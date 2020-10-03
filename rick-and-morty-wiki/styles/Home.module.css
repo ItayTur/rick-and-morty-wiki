@@ -187,6 +187,11 @@
     margin-bottom: 0.5em;
   }
 
+  .search button:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 0.5em
+  }
+
   .search input,
   .search button {
     width: 100%;
