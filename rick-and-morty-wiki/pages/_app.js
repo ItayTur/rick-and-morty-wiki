@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/globals.css'
+import { useState, useEffect } from 'react';
+import Canvas from '../components/Canvas/Canvas'
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps, router }) {
   return (
@@ -17,7 +19,8 @@ function MyApp({ Component, pageProps, router }) {
           opacity: 0
         }
       }}>
-        <Component {...pageProps} />
+        <Canvas />
+        <Component {...pageProps} style={{zIndex: '2'}} />
       </motion.div>
     </AnimatePresence>
   )

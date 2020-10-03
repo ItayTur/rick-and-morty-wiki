@@ -5,8 +5,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #ffbd47;
+  background: transparent;
   --main-color: #ff40ab;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .main {
@@ -53,7 +57,7 @@
   line-height: 1.15;
   font-size: 4rem;
   color: var(--main-color );
-  -webkit-text-stroke: 1px white;
+  -webkit-text-stroke: 1px black;
 }
 
 .title,
@@ -64,7 +68,8 @@
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
-  color: white;
+  color: #FFAE0F;
+  font-weight: 900;
 }
 
 .code {
@@ -107,6 +112,7 @@
 .card:active {
   color: #0b26bf;
   border-color: #0b26bf;
+  z-index: 5;
 }
 
 .card h3 {
