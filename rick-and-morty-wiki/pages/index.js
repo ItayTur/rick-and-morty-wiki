@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
@@ -60,7 +61,7 @@ export default function Home({ data }) {
   const handleGetAll = e => {
     e.preventDefault();
     updateSearchQuery('');
-    updatePage({current: defaultEndPoint});
+    updatePage({ current: defaultEndPoint });
   }
 
   const hasCharacters = Boolean(characters);
@@ -84,9 +85,23 @@ export default function Home({ data }) {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Wubba Lubba Dub Dub!
+        <motion.div initial='hidden' animate='visible' variants={{
+          hidden: {
+            scale: .8,
+            opacity: 0
+          },
+          visible: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+              delay: .4
+            }
+          }
+        }}>
+          <h1 className={styles.title}>
+            Wubba Lubba Dub Dub!
         </h1>
+        </motion.div>
 
         <p className={styles.description}>
           Rick and Morty Character Wiki

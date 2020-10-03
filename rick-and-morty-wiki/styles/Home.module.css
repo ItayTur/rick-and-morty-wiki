@@ -129,6 +129,7 @@
   height: 28px;
   border: 1px solid #eee;
   border-radius: 4px;
+  padding: 5px;
 }
 
 .search button:not(:last-child) {
