@@ -68,7 +68,8 @@ export default function Home({ data }) {
 
   const charactersJsx = hasCharacters ? characters.map(character =>
     <motion.li key={character.id} className={styles.card} whileHover={{
-      scale: 1.2,
+      scale: [1, 1.4, 1.2],
+      rotate: [0, 10, -10, 0],
       transition: {
         duration: .2
       }
