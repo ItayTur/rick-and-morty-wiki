@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
+import Button from '../components/Button/button';
 import styles from '../styles/Home.module.css';
 
 export const defaultEndPoint = 'https://rickandmortyapi.com/api/character/';
@@ -67,7 +68,16 @@ export default function Home({ data }) {
   const hasCharacters = Boolean(characters);
 
   const charactersJsx = hasCharacters ? characters.map(character =>
-    <motion.li key={character.id} className={styles.card} whileHover={{
+    <motion.li variants ={{
+      hidden: {
+        opacity: 0
+      },
+      show: {
+        opacity: 1,
+        rotate: [0, Math.random() * 50, 0],
+      },
+      transition: .5
+    }} key={character.id} className={styles.card} whileHover={{
       scale: [1, 1.4, 1.2],
       rotate: [0, 10, -10, 0],
       transition: {
@@ -80,12 +90,12 @@ export default function Home({ data }) {
         'hue-rotate(0) contrast(100%)'
       ]
     }}>
-        <Link href='/character/[id]' as={`/character/${character.id}`}>
-          <a>
-            <img src={character.image} alt={`${character.name} thumbnail`} />
-            <h3>{character.name}</h3>
-          </a>
-        </Link>
+      <Link href='/character/[id]' as={`/character/${character.id}`}>
+        <a>
+          <img src={character.image} alt={`${character.name} thumbnail`} />
+          <h3>{character.name}</h3>
+        </a>
+      </Link>
     </motion.li>
   ) : <h3>learn to spell</h3>;
 
@@ -121,16 +131,26 @@ export default function Home({ data }) {
 
         <form className={styles.search} onSubmit={handleSearch}>
           <input placeholder='example: Mr. mees' value={searchQuery} onChange={e => updateSearchQuery(e.target.value)} name='query' type='search' />
-          <button className={styles.button}>Search</button>
-          <button onClick={handleGetAll} className={styles.button}>Get All</button>
+          <Button value='Search'/>
+          <Button onClick={handleGetAll} value='Get All' />
         </form>
 
-        <ul className={styles.grid}>
+        <motion.ul initial='hidden' animate='show' className={styles.grid} variants={{
+          hidden: {
+            opacity: 0
+          },
+          show: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.5
+            }
+          }
+        }}>
           {charactersJsx}
-        </ul>
-        <p>
-          {hasCharacters && <button className={styles.button} onClick={handleLoadMore}>Load More</button>}
-        </p>
+        </motion.ul>
+        {hasCharacters && <p>
+          <Button onClick={handleLoadMore} value='Load More' />
+        </p>}
       </main>
 
       <footer className={styles.footer}>

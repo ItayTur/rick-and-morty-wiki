@@ -146,8 +146,8 @@
 }
 
 .button:hover {
-  color: #ccc;
-  border: 1px solid #ccc;
+  transform: translate(0,-2px);
+  box-shadow: 0 3px 3px #ccc;
 }
 
 .profile {
